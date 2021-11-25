@@ -1,0 +1,219 @@
+DEFINIR
+	fonctions: tri_bulles, tri_selection, tri_fusion, comparaison_tri
+	entier: taille_tb, choix_tri, choix_mode, i, temp, tps
+	tableau: tb_in, tb_out, types
+FIN DEFINIR
+
+
+DEBUT
+	AFFICHER("Veuiller indiquer la taille du tableau souhaité (superieur à 0):")
+	LIRE(taille_tb)
+	types <- tableau("tri a bulles", "tri selection", "tri fusion")
+	tb_in <- tableau(taille: taille_tb)
+	tb_out<- tableau(taille: taille_tb)
+	POUR i allant de 0 a taille_tb-1 PAS DE 1 FAIRE
+		temp <- entier_aleatoire(10000)
+		tb_in[i] <- temp
+		tb_out[in] <- temp
+	FIN POUR
+	AFFICHER("Veuillez selectionner le type de tri (1:tri à bulle, 2:tri selection, 3: tri fusion):")
+	LIRE(choix_tri)
+	AFFICHER("Veuillez selectionner le mode de tri (1: ordre croissant, 2: ordre décroissant):")
+	LIRE(choix_mode)
+	CAS OU choix_tri ALORS:
+		1:
+		DEBUT
+			tps <- tri_bulles(tb_out, taille_tb)
+		FIN
+		2:
+		DEBUT
+			tps <- tri_selection(tb_out, taille_tb)
+		FIN
+		3:
+		DEBUT
+			tps <- tri_fusion(tb_out, taille_tb)
+		FIN
+		4:
+		DEBUT
+			comparaison_tri(tb_out, taille_tb)
+		FIN
+	FIN AU CAS OU
+	AFFICHER("tableau de depart:", tb_in)
+	AFFICHER("tableau trie:", tb_out)
+	SI choix_tri >=1 ET choix_tri<=3 FAIRE
+		AFFICHER("type de tri:",types[choix_tri-1])
+		AFFICHER("temps d'execution :", tps)
+	FIN SI
+FIN
+
+FONCTION comparaison_tri(tb, taille_tb)
+	DEFINIR
+		fonctions: tri_bulles, tri_fusion, tri_selection, copie_tableau
+		tableau: tb_res, tb_tmp, tb
+		entier: tps_b, tps_f, tps_s, i
+	FIN DEFINIR
+	
+	DEBUT
+		tb_res <- tableau(taille: 3)
+		tb_tmp<- tableau(taille: taille_tb)
+		copie_tableau(tb, tb_tmp, taille_tb)
+		POUR i ALLANT DE 0 A 2 FAIRE
+			copie_tableau(tb_tmp, tb, taille_tb)
+			SI i = 0 FAIRE
+				tps_b <- tri_bulles(tb, taille_tb)
+				tb_res[i] = tps_b
+			SINON
+				SI i=1 FAIRE
+					tps_f <- tri_fusion(tb, taille_tb)
+					tb_res[i] = tps_f
+				SINON
+					SI i=2 FAIRE
+						tps_s = tri_selection(tb, taille_tb)
+						tb_res[i] = tps_s
+					FIN SI
+				FIN SI
+			FIN SI
+		FIN POUR
+		AFFICHER("comparaison des tris : ")
+		POUR i ALLANT DE 0 A 2 FAIRE:
+			SI tb_res[i]=tps_b FAIRE
+				AFFICHER("position", i+1, " : tri a bulles avec une duree d'execution de ", tps_b)
+				tps_b <- -1
+			SINON
+				SI tb_res[i]=tps_s FAIRE
+					AFFICHER("position", i+1, " : tri a bulles avec une duree d'execution de ", tps_s)
+					tps_s <- -1
+				SINON
+					SI tb_res[i]=tps_f FAIRE
+						AFFICHER("position", i+1, " : tri a bulles avec une duree d'execution de ", tps_f)
+						tps_f <- -1
+					FIN SI
+				FIN SI
+			FIN SI
+		FIN POUR
+	FIN
+
+FONCTION tri_bulles(tb, taille_tb)
+
+	DEFINIR
+		tableau: tb
+		entier: taille_tb, i, j, temp
+		bool: echange
+	FIN DEFINIR
+
+	DEBUT
+		i <- taille_tb
+		echange <- 1
+		TANT QUE i >0 ET echange=vrai FAIRE
+			echange <- 0
+			POUR j ALLANT DE 0 A i-2 PAS DE 1 FAIRE
+				SI tb[j]> tb[j+1] FAIRE
+					temp <- tb_temp[j]
+					tb[j] <- tb[j+ 1]
+					tb[j+1] <- temp
+					echange <- 1 
+				FIN SI
+			FIN POUR
+			i <- i-1
+		FIN TANT QUE
+	FIN
+
+FONCTION tri_selection(tb, taille_tb)
+	DEFINIR
+		tableau: tb, tb_temp
+		entier: taille_tb, max, j
+		fonction: copie_tableau
+	FIN DEFINIR
+	
+	DEBUT
+		tb_temp <- tableau(taille: taille_tb)
+		copie_tableau(tb, tb_temp, taille_tb)
+		j <- taille_tb-1
+		TANT QUE j>=0 FAIRE
+			max<-0
+			POUR i ALLANT DE 0 A taille_tb-1 PAS DE 1 FAIRE
+				SI tb_temp[i] > max FAIRE
+					max_pos <-i
+					max <- tb_temp[i]
+				FIN SI
+			FIN POUR
+			tb[j] <- tb_temp[max_pos]
+			j <- j-1
+			tb_temp[max_pos] <- -1
+		FIN TANT QUE
+	FIN
+	
+FONCTION tri_fusion(tb, taille_tb)
+	DEFINIR
+		tableau: tb_tmp, tb
+		entier: i, debut, fin, taille_tb
+		fonction: fusion
+	FIN DEFINIR
+	DEBUT
+		tb_tmp<-tableau(taille: taille_tb)
+		i <- 1
+		fin <- debut + i + i - 1
+		TANT QUE (i < taille_tb) FAIRE
+			debut  <- 0
+			TANT QUE (debut +i-1 < taille_tb) FAIRE
+				fin <- debut+(2*i)-1
+				SI (fin > taille_tb-1) ALORS
+					fin <- taille_tb-1
+				FIN SI
+				fusion(tab, tmp, debut, debut + i - 1, fin)
+				debut <- debut+(2*i)
+		FIN TANT QUE
+		i = i + i
+	FIN TANT QUE
+FIN
+
+FONCTION fusion(tb, tb_tmp, debut, mil, fin)
+	DEFINIR
+		entier: debut, mil, fin, k, i, j
+		tableau: tb, tb_tmp
+	FIN DEFINIR
+	
+	DEBUT
+		j <- mil+1
+		i <- debut
+		POUR k ALLANT DE debut A fin PAS DE 1 FAIRE
+			SI j > fin OU i<= mil ET tb[i]<tb[j] FAIRE
+				tb_tmp[k] <- tb[i]
+				i <- i+1
+			SINON
+				tb_tmp[k] <- tb[j]
+				j <- j+1
+			FIN SI
+		POUR k ALLANT DE debut A fin PAS DE 1 FAIRE
+			tb[k] <- tb_tmp[k]
+	FIN
+
+FONCTION afficher_tableau(tb, taille_tb, inverse)
+	DEFINIR
+		tableau: tb
+		entier: taille_tb, inverse, i
+	FIN DEFINIR
+	
+	DEBUT
+		SI inverse FAIRE
+			POUR i ALLANT DE taille_tb-1 A 0 PAS DE -1FAIRE
+				AFFICHER(tb[i])
+			FIN POUR
+		SINON
+			POUR i ALLANT DE 0 A taille_tb-1 FAIRE
+				AFFICHER(tb[i])
+			FIN POUR
+		FIN SI
+	FIN
+
+FONCTION copie_tableau(tba, tbb, taille_tb)
+	DEFINIR
+		tableaux: tba, tbb
+		entier: taille_tb, i
+	FIN DEFINIR
+	
+	DEBUT
+		POUR i ALLANT DE 0 A taille_tb-1 FAIRE
+			tbb[i] = tba[i]
+		FIN POUR
+	FIN
