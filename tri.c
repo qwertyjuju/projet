@@ -34,6 +34,7 @@ unsigned long tri_selection(int *tb, int taille_tb){
 	//debut tri
 	while (j>=0){
 		max=0;
+		max_pos=0;
 		//iteration dans le tableau pour trouver la valeur max et la position dans le tableau de la valeur max
 		for (i=0;i<taille_tb;i++){
 			if (tb_tmp[i]> max){
