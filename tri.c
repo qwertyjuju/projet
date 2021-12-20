@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <limits.h>
 
 void afficher_tableau (int *tb, int taille_tb, int inverse){
 	// fonction pour afficher a l'ecran un tableau de valeur (soit depuis le debut, soit depuis la fin)
@@ -25,15 +26,15 @@ void copie_tableau(int *tba, int *tbb, int taille_tb){
 }
 
 unsigned long tri_selection(int *tb, int taille_tb){
-	int i, j=taille_tb-1, max, max_pos, tb_tmp[taille_tb];
+	int i, j, max, max_pos, tb_tmp[taille_tb];
 	unsigned long tps;
 	// Copie tableau dans tableau temporaire
 	copie_tableau(tb, tb_tmp, taille_tb);
 	//Debut prise temps d'execution
 	clock_t begin = clock();
 	//debut tri
-	while (j>=0){
-		max=0;
+	for (j=taille_tb-1; j>=0;j--){
+		max=INT_MIN;
 		max_pos=0;
 		//iteration dans le tableau pour trouver la valeur max et la position dans le tableau de la valeur max
 		for (i=0;i<taille_tb;i++){
@@ -43,8 +44,7 @@ unsigned long tri_selection(int *tb, int taille_tb){
 			}
 		}
 		tb[j]= tb_tmp[max_pos];
-		j--;
-		tb_tmp[max_pos]=-1;
+		tb_tmp[max_pos]=INT_MIN;
 	}
 	clock_t end = clock();
 	tps=((end-begin)*1000)/CLOCKS_PER_SEC;
@@ -171,7 +171,7 @@ void main(){
 	//Remplissage tableau entrée
 	srand(time(NULL));
 	for (i=0;i<taille_tb;i++){
-		temp = rand()%10001;
+		temp = rand()%20001-10000;
 		tb_in[i] = temp;
 		tb_out[i] = temp;
 	}
