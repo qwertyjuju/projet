@@ -26,10 +26,8 @@ void copie_tableau(int *tba, int *tbb, int taille_tb){
 }
 
 unsigned long tri_selection(int *tb, int taille_tb){
-	int i, j, max, max_pos, tb_tmp[taille_tb];
+	int i, j, max, max_pos, temp;
 	unsigned long tps;
-	// Copie tableau dans tableau temporaire
-	copie_tableau(tb, tb_tmp, taille_tb);
 	//Debut prise temps d'execution
 	clock_t begin = clock();
 	//debut tri
@@ -37,14 +35,15 @@ unsigned long tri_selection(int *tb, int taille_tb){
 		max=INT_MIN;
 		max_pos=0;
 		//iteration dans le tableau pour trouver la valeur max et la position dans le tableau de la valeur max
-		for (i=0;i<taille_tb;i++){
-			if (tb_tmp[i]> max){
+		for (i=0;i<=j;i++){
+			if (tb[i]> max){
 				max_pos = i;
-				max = tb_tmp[i];
+				max = tb[i];
 			}
 		}
-		tb[j]= tb_tmp[max_pos];
-		tb_tmp[max_pos]=INT_MIN;
+		temp = tb[j];
+		tb[j]= max;
+		tb[max_pos]= temp;
 	}
 	clock_t end = clock();
 	tps=((end-begin)*1000)/CLOCKS_PER_SEC;

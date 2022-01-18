@@ -46,6 +46,20 @@ def tri_selection(tb, taille_tb):
     end = tm()
     return (end-begin)*1000
 
+def tri_fusion2(tb):
+    def fusion(min,max,m):
+        for i in range(min,m):
+            for j in range (m, max):
+                if tb[i] > tb[j]:
+                    tb[i:m], tb[j:max] = tb[j:max], tb[i:m]
+
+    def trf(min,max):
+        if max<=min+1: return
+        m = (min+max)//2
+        trf(min,m)
+        trf(m,max)
+        fusion(min,max,m)
+
 def fusion(tb, tb_tmp, debut, mil, fin):
     i = debut
     j= mil+1
